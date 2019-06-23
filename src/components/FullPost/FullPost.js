@@ -10,6 +10,8 @@ class FullPost extends Component {
     componentDidUpdate() {
         // we need to make sure to not create infinite loop when update state here
         if (this.props.id) {
+            // to avoid infinite loop
+            // because this.setState will update STATE and trigger again componentDidUpdate()
             if (!this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== this.props.id) ) {
                 //axios.get('https://jsonplaceholder.typicode.com/posts/' + this.props.id)
                 fetch('https://jsonplaceholder.typicode.com/posts/' + this.props.id)

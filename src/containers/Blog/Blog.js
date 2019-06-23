@@ -17,7 +17,7 @@ class Blog extends Component {
 
         //https://developers.google.com/web/updates/2015/03/introduction-to-fetch
         fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(response => response.json())
+            .then(response => response.json()) // we access DATA with response.json()
             //.then(json => console.log(json))
             .then(jsonData => {
                 //transform data
