@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
 import Post from '../../components/Post/Post';
 import FullPost from '../../components/FullPost/FullPost';
@@ -8,8 +8,9 @@ import './Blog.css';
 class Blog extends Component {
 
     state = {
-        posts:[],
-        selectedPostId: null
+        posts: [],
+        selectedPostId: null,
+        error: false
     };
 
     componentDidMount() {
@@ -23,16 +24,22 @@ class Blog extends Component {
                 //transform data
                 const post = jsonData.slice(0, 4); // get only 4 posts
                 const updatedPosts = post.map(post => {
-                   return {
+                    return {
                         ...post,
                         author: 'Zoran Markovic'  // create Author manually
-                   }
+                    }
                 });
 
                 this.setState({
                     posts: updatedPosts
                 })
             })
+            .catch(error => {
+                // console.error('Fetch error: ', error);
+                this.setState({
+                    error: true
+                })
+            });
     };
 
     postSelectedHandler = (id) => {
@@ -41,18 +48,21 @@ class Blog extends Component {
         });
     };
 
-    render () {
+    render() {
 
-        // map store new array which will be save in const post
-        const posts = this.state.posts.map(post => {
+        let posts = <p style={{color: 'red', textAlign: 'center'}}>Something went wrong with fetching Posts!</p>;
+
+        if (!this.state.error) {
+            // map store new array which will be save in const post
+            posts = this.state.posts.map(post => {
                 return <Post
                     key={post.id}
                     title={post.title}
                     author={post.author}
-                    clicked={ () => this.postSelectedHandler(post.id) }
+                    clicked={() => this.postSelectedHandler(post.id)}
                 />
-            }
-        );
+            });
+        }
 
         return (
             <div>
@@ -60,10 +70,10 @@ class Blog extends Component {
                     {posts}
                 </section>
                 <section>
-                    <FullPost id={this.state.selectedPostId} />
+                    <FullPost id={this.state.selectedPostId}/>
                 </section>
                 <section>
-                    <NewPost />
+                    <NewPost/>
                 </section>
             </div>
         );
