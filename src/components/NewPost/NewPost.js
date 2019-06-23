@@ -23,6 +23,7 @@ class NewPost extends Component {
             .catch(error => console.error(error));
 
         function postData(url = '', data = {}) {
+            // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
             // Default options are marked with *
             return fetch(url, {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
