@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+//import axios from 'axios';
+import axiosInstance from '../../axios';
 import Post from '../../components/Post/Post';
 import FullPost from '../../components/FullPost/FullPost';
 import NewPost from '../../components/NewPost/NewPost';
@@ -14,15 +15,18 @@ class Blog extends Component {
     };
 
     componentDidMount() {
-        //axios.get('https://jsonplaceholder.typicode.com/posts')
+
 
         //https://developers.google.com/web/updates/2015/03/introduction-to-fetch
-        fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(response => response.json()) // we access DATA with response.json()
+        //fetch('https://jsonplaceholder.typicode.com/posts')
+            //.then(response => response.json()) // we access DATA with response.json()
             //.then(json => console.log(json))
-            .then(jsonData => {
+            //.then(jsonData => {
+            //const post = jsonData.slice(0, 4); // get only 4 posts
+        axiosInstance.get('/posts') // no need because off global configuration in index.js
+            .then(response => { // we access DATA with response.json()
                 //transform data
-                const post = jsonData.slice(0, 4); // get only 4 posts
+                const post = response.data.slice(0, 4); // get only 4 posts
                 const updatedPosts = post.map(post => {
                     return {
                         ...post,
