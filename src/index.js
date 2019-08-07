@@ -12,7 +12,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // Interceptors are global now for whole APP, https://www.udemy.com/react-the-complete-guide-incl-redux/learn/lecture/8125790#overview
 // Interceptors are used to globally set configurations for fetching URL and error handling
-let interceptorRequest = axios.interceptors.request.use(request => {
+axios.interceptors.request.use(request => {
     console.log('request: ', request);
     // Edit request config
     return request;
@@ -21,7 +21,7 @@ let interceptorRequest = axios.interceptors.request.use(request => {
     return Promise.reject(error); // for errors when SENDING requests
 });
 
-let interceptorResponse = axios.interceptors.response.use(response => {
+axios.interceptors.response.use(response => {
     console.log('response: ', response);
     // Edit request config
     return response;

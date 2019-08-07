@@ -1,84 +1,38 @@
 import React, {Component} from 'react';
-//import axios from 'axios';
-import axiosInstance from '../../axios';
-import Post from '../../components/Post/Post';
-import FullPost from '../../components/FullPost/FullPost';
-import NewPost from '../../components/NewPost/NewPost';
+import { Route, NavLink, Switch, Redirect } from "react-router-dom";
 import './Blog.css';
+import Posts from "./Posts/Posts";
+import NewPost from "./NewPost/NewPost";
 
 class Blog extends Component {
-
     state = {
-        posts: [],
-        selectedPostId: null,
-        error: false
-    };
-
-    componentDidMount() {
-
-
-        //https://developers.google.com/web/updates/2015/03/introduction-to-fetch
-        //fetch('https://jsonplaceholder.typicode.com/posts')
-            //.then(response => response.json()) // we access DATA with response.json()
-            //.then(json => console.log(json))
-            //.then(jsonData => {
-            //const post = jsonData.slice(0, 4); // get only 4 posts
-        axiosInstance.get('/posts') // no need because off global configuration in index.js
-            .then(response => { // we access DATA with response.json()
-                //transform data
-                const post = response.data.slice(0, 4); // get only 4 posts
-                const updatedPosts = post.map(post => {
-                    return {
-                        ...post,
-                        author: 'Zoran Markovic'  // create Author manually
-                    }
-                });
-
-                this.setState({
-                    posts: updatedPosts
-                })
-            })
-            .catch(error => {
-                // console.error('Fetch error: ', error);
-                this.setState({
-                    error: true
-                })
-            });
-    };
-
-    postSelectedHandler = (id) => {
-        this.setState({
-            selectedPostId: id
-        });
+        auth: true
     };
 
     render() {
-
-        let posts = <p style={{color: 'red', textAlign: 'center'}}>Something went wrong with fetching Posts!</p>;
-
-        if (!this.state.error) {
-            // map store new array which will be save in const post
-            posts = this.state.posts.map(post => {
-                return <Post
-                    key={post.id}
-                    title={post.title}
-                    author={post.author}
-                    clicked={() => this.postSelectedHandler(post.id)}
-                />
-            });
-        }
-
         return (
-            <div>
-                <section className="Posts">
-                    {posts}
-                </section>
-                <section>
-                    <FullPost id={this.state.selectedPostId}/>
-                </section>
-                <section>
-                    <NewPost/>
-                </section>
+            <div className="Blog">
+                <header>
+                    <nav>
+                        <ul>
+                            <li><NavLink to="/posts/" exact>Home</NavLink></li>{/* active class is added by default by EXACT attribute*/}
+                            <li><NavLink to={{
+                                pathname: '/new-post',  // absolute path always add to route domain,
+                                //pathname: this.props.match.url + '/new-post',  // relative path, concatenate to existing URL
+                                // https://www.udemy.com/react-the-complete-guide-incl-redux/learn/lecture/8140667#overview
+                                hash: '#submit',  // go to element submit
+                                search: '?quick-submit=true'
+                            }}>New Post</NavLink></li>
+                        </ul>
+                    </nav>
+                </header>
+                <Switch>{/* Switch will render only one Route which first match the URL*/}
+                    {/*<Route path="/" exact render={()=> <h1>Home</h1>}/>*/}
+                    {this.state.auth ? <Route path="/new-post" component={NewPost}/> : null}
+                    <Route path="/posts/" component={Posts}/>
+                    <Redirect from="/" to="/posts/" />
+                    {/*<Route path="/:id" exact component={FullPost}/> we nested it inside Posts*/}
+                </Switch>
             </div>
         );
     }
