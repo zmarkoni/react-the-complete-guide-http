@@ -4,6 +4,7 @@ import Blog from './containers/Blog/Blog';
 
 class App extends Component {
     render() {
+        // https://reacttraining.com/react-router/web/guides/philosophy
         // https://www.udemy.com/react-the-complete-guide-incl-redux/learn/lecture/8138600#overview
         return (
             // <BrowserRouter basename="/my-app"> If our app begin with example.com/my-app
