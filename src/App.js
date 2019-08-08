@@ -4,13 +4,16 @@ import Blog from './containers/Blog/Blog';
 
 class App extends Component {
     render() {
+        // https://www.udemy.com/react-the-complete-guide-incl-redux/learn/lecture/8138600#overview
         return (
-            <BrowserRouter>
-                <div className="App">
-                    <Blog/>
-                </div>
-            </BrowserRouter>
-        );
+            // <BrowserRouter basename="/my-app"> If our app begin with example.com/my-app
+            <BrowserRouter basename="/"> {/* Default, no need to write: basename */}
+            <div className="App">
+                <Blog/>
+            </div>
+        </BrowserRouter>
+    )
+        ;
     }
 }
 
